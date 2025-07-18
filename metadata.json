@@ -1,0 +1,6 @@
+{
+  "name": "¿Qué le regalo?",
+  "description": "An application that helps you find the perfect gift through a series of chained questions, like a decision tree, to filter options based on various criteria.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
