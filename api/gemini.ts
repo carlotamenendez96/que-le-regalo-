@@ -1,49 +1,45 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const API_KEY = process.env.GEMINI_API_KEY;
-
-if (!API_KEY) {
-  throw new Error('GEMINI_API_KEY no está configurada como variable de entorno.');
-}
-
-const genAI = new GoogleGenerativeAI(API_KEY);
-
-// Esquema JSON que esperamos de Gemini
-const responseSchema = {
-  type: "array",
-  items: {
-    type: "object",
-    properties: {
-      nombre: {
-        type: "string",
-        description: "El nombre creativo y atractivo del regalo sugerido."
-      },
-      descripcion: {
-        type: "string", 
-        description: "Una descripción detallada (2-3 frases) del regalo, explicando por qué es una excelente opción para el destinatario."
-      },
-      categoria: {
-        type: "string",
-        description: "La categoría principal del regalo (ej. Tecnología, Experiencia, Moda, Libros, Hogar)."
-      }
-    },
-    required: ["nombre", "descripcion", "categoria"]
-  }
-};
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Configurar CORS para Vercel
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Manejar preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
   try {
+    const API_KEY = process.env.GEMINI_API_KEY;
+
+    if (!API_KEY) {
+      console.error('GEMINI_API_KEY no está configurada');
+      return res.status(500).json({ 
+        message: 'Error de configuración del servidor',
+        response: JSON.stringify([
+          {
+            nombre: "Regalo Especial",
+            descripcion: "Un regalo cuidadosamente seleccionado que refleja el cariño hacia el destinatario.",
+            categoria: "General"
+          }
+        ])
+      });
+    }
+
     const { prompt } = req.body as { prompt?: string };
 
     if (!prompt) {
       return res.status(400).json({ message: 'Prompt is required' });
     }
 
+    const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
     // Configuración mejorada para obtener JSON válido
@@ -74,13 +70,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // Si falla el parsing, devolver sugerencias por defecto
       suggestions = [
         {
-          nombre: "Regalo Personalizado",
-          descripcion: "Un regalo único y especial que se adapta perfectamente a los gustos e intereses del destinatario.",
-          categoria: "Personalizado"
+          nombre: "Reloj Inteligente Personalizado",
+          descripcion: "Un reloj inteligente con bandas intercambiables que se adapta al estilo personal del destinatario.",
+          categoria: "Tecnología"
         },
         {
-          nombre: "Experiencia Memorável",
-          descripcion: "Una experiencia inolvidable que creará recuerdos especiales y momentos únicos.",
+          nombre: "Experiencia de Spa en Casa",
+          descripcion: "Un kit completo de spa con velas aromáticas y aceites esenciales para momentos de relax.",
+          categoria: "Bienestar"
+        },
+        {
+          nombre: "Libro Personalizado de Recetas",
+          descripcion: "Un libro de cocina con recetas favoritas y espacio para agregar nuevas experiencias culinarias.",
+          categoria: "Hogar"
+        },
+        {
+          nombre: "Clase de Arte Online",
+          descripcion: "Una suscripción a clases de arte virtuales con materiales incluidos para desarrollar la creatividad.",
+          categoria: "Educación"
+        },
+        {
+          nombre: "Set de Jardinería Interior",
+          descripcion: "Un kit completo para crear un pequeño jardín interior con plantas fáciles de cuidar.",
+          categoria: "Hogar"
+        },
+        {
+          nombre: "Experiencia Gastronómica",
+          descripcion: "Una cena en un restaurante exclusivo o un curso de cocina especializado.",
           categoria: "Experiencia"
         }
       ];
@@ -110,7 +126,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       );
     }
 
-    res.status(200).json({ 
+    return res.status(200).json({ 
       response: JSON.stringify(validSuggestions),
       count: validSuggestions.length 
     });
@@ -121,18 +137,38 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Devolver sugerencias por defecto en caso de error
     const fallbackSuggestions = [
       {
-        nombre: "Regalo Personalizado",
-        descripcion: "Un regalo único que se adapta perfectamente a los gustos del destinatario.",
-        categoria: "Personalizado"
+        nombre: "Reloj Inteligente Personalizado",
+        descripcion: "Un reloj inteligente con bandas intercambiables que se adapta al estilo personal del destinatario.",
+        categoria: "Tecnología"
       },
       {
-        nombre: "Experiencia Especial", 
-        descripcion: "Una experiencia memorable que creará recuerdos inolvidables.",
+        nombre: "Experiencia de Spa en Casa",
+        descripcion: "Un kit completo de spa con velas aromáticas y aceites esenciales para momentos de relax.",
+        categoria: "Bienestar"
+      },
+      {
+        nombre: "Libro Personalizado de Recetas",
+        descripcion: "Un libro de cocina con recetas favoritas y espacio para agregar nuevas experiencias culinarias.",
+        categoria: "Hogar"
+      },
+      {
+        nombre: "Clase de Arte Online",
+        descripcion: "Una suscripción a clases de arte virtuales con materiales incluidos para desarrollar la creatividad.",
+        categoria: "Educación"
+      },
+      {
+        nombre: "Set de Jardinería Interior",
+        descripcion: "Un kit completo para crear un pequeño jardín interior con plantas fáciles de cuidar.",
+        categoria: "Hogar"
+      },
+      {
+        nombre: "Experiencia Gastronómica",
+        descripcion: "Una cena en un restaurante exclusivo o un curso de cocina especializado.",
         categoria: "Experiencia"
       }
     ];
 
-    res.status(200).json({ 
+    return res.status(200).json({ 
       response: JSON.stringify(fallbackSuggestions),
       count: fallbackSuggestions.length,
       error: "Se usaron sugerencias por defecto debido a un error en el procesamiento."

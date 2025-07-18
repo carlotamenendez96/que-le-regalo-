@@ -2,7 +2,13 @@ import type { UserAnswers, GiftSuggestion } from '../types';
 
 export async function getGiftSuggestions(answers: UserAnswers): Promise<GiftSuggestion[]> {
   try {
-    const response = await fetch('/api/gemini', {
+    // Determinar la URL base según el entorno
+    const baseUrl = import.meta.env.DEV ? '' : 'https://que-le-regalo.vercel.app';
+    const apiUrl = `${baseUrl}/api/gemini`;
+    
+    console.log('Llamando a:', apiUrl);
+    
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -11,17 +17,35 @@ export async function getGiftSuggestions(answers: UserAnswers): Promise<GiftSugg
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error en la solicitud a Gemini');
+      const errorData = await response.json().catch(() => ({ message: 'Error desconocido' }));
+      throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
     }
 
     const data = await response.json();
-    // Suponemos que el backend devuelve un array de sugerencias en data.response (JSON string)
+    console.log('Respuesta del backend:', data);
+    
+    // Verificar que tenemos una respuesta válida
+    if (!data.response) {
+      throw new Error('Respuesta inválida del servidor');
+    }
+    
+    // Parsear las sugerencias
     const suggestions: GiftSuggestion[] = JSON.parse(data.response);
+    
+    if (!Array.isArray(suggestions) || suggestions.length === 0) {
+      throw new Error('No se recibieron sugerencias válidas');
+    }
+    
     return suggestions;
   } catch (error) {
     console.error('Error al obtener sugerencias de Gemini:', error);
-    return [];
+    
+    // Si es un error de red, lanzar un error específico
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error('Error de conexión. Verifica tu internet e inténtalo de nuevo.');
+    }
+    
+    throw error;
   }
 }
 
