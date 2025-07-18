@@ -39,6 +39,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ message: 'Prompt is required' });
     }
 
+    console.log('Prompt recibido:', prompt.substring(0, 200) + '...');
+
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
@@ -46,9 +48,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const result = await model.generateContent({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
       generationConfig: {
-        maxOutputTokens: 1000,
-        temperature: 0.7,
-        topP: 0.8,
+        maxOutputTokens: 1500,
+        temperature: 0.8,
+        topP: 0.9,
         topK: 40,
       },
     });
@@ -56,50 +58,70 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const response = await result.response;
     let text = response.text().trim();
 
+    console.log('Respuesta raw de Gemini:', text.substring(0, 300) + '...');
+
     // Limpiar el texto de markdown si está presente
-    text = text.replace(/^```json\s*/, '').replace(/```$/, '').trim();
+    text = text.replace(/^```json\s*/i, '').replace(/```$/i, '').trim();
+    text = text.replace(/^```\s*/i, '').replace(/```$/i, '').trim();
 
     // Intentar parsear el JSON
     let suggestions;
     try {
       suggestions = JSON.parse(text);
+      console.log('JSON parseado exitosamente');
     } catch (parseError) {
       console.error('Error parsing JSON from Gemini:', parseError);
-      console.log('Raw response:', text);
+      console.log('Raw response que falló:', text);
       
-      // Si falla el parsing, devolver sugerencias por defecto
-      suggestions = [
-        {
-          nombre: "Reloj Inteligente Personalizado",
-          descripcion: "Un reloj inteligente con bandas intercambiables que se adapta al estilo personal del destinatario.",
-          categoria: "Tecnología"
-        },
-        {
-          nombre: "Experiencia de Spa en Casa",
-          descripcion: "Un kit completo de spa con velas aromáticas y aceites esenciales para momentos de relax.",
-          categoria: "Bienestar"
-        },
-        {
-          nombre: "Libro Personalizado de Recetas",
-          descripcion: "Un libro de cocina con recetas favoritas y espacio para agregar nuevas experiencias culinarias.",
-          categoria: "Hogar"
-        },
-        {
-          nombre: "Clase de Arte Online",
-          descripcion: "Una suscripción a clases de arte virtuales con materiales incluidos para desarrollar la creatividad.",
-          categoria: "Educación"
-        },
-        {
-          nombre: "Set de Jardinería Interior",
-          descripcion: "Un kit completo para crear un pequeño jardín interior con plantas fáciles de cuidar.",
-          categoria: "Hogar"
-        },
-        {
-          nombre: "Experiencia Gastronómica",
-          descripcion: "Una cena en un restaurante exclusivo o un curso de cocina especializado.",
-          categoria: "Experiencia"
+      // Intentar extraer JSON del texto si está mezclado
+      const jsonMatch = text.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        try {
+          suggestions = JSON.parse(jsonMatch[0]);
+          console.log('JSON extraído del texto mezclado');
+        } catch (secondError) {
+          console.error('Segundo intento de parsing falló:', secondError);
+          suggestions = null;
         }
-      ];
+      } else {
+        suggestions = null;
+      }
+      
+      // Si aún falla, usar sugerencias por defecto
+      if (!suggestions) {
+        suggestions = [
+          {
+            nombre: "Reloj Inteligente Personalizado",
+            descripcion: "Un reloj inteligente con bandas intercambiables que se adapta al estilo personal del destinatario.",
+            categoria: "Tecnología"
+          },
+          {
+            nombre: "Experiencia de Spa en Casa",
+            descripcion: "Un kit completo de spa con velas aromáticas y aceites esenciales para momentos de relax.",
+            categoria: "Bienestar"
+          },
+          {
+            nombre: "Libro Personalizado de Recetas",
+            descripcion: "Un libro de cocina con recetas favoritas y espacio para agregar nuevas experiencias culinarias.",
+            categoria: "Hogar"
+          },
+          {
+            nombre: "Clase de Arte Online",
+            descripcion: "Una suscripción a clases de arte virtuales con materiales incluidos para desarrollar la creatividad.",
+            categoria: "Educación"
+          },
+          {
+            nombre: "Set de Jardinería Interior",
+            descripcion: "Un kit completo para crear un pequeño jardín interior con plantas fáciles de cuidar.",
+            categoria: "Hogar"
+          },
+          {
+            nombre: "Experiencia Gastronómica",
+            descripcion: "Una cena en un restaurante exclusivo o un curso de cocina especializado.",
+            categoria: "Experiencia"
+          }
+        ];
+      }
     }
 
     // Validar que sea un array
@@ -125,6 +147,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
       );
     }
+
+    console.log(`Devolviendo ${validSuggestions.length} sugerencias válidas`);
 
     return res.status(200).json({ 
       response: JSON.stringify(validSuggestions),
