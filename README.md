@@ -98,6 +98,21 @@ La aplicación utiliza un **backend seguro** con función serverless en Vercel p
 - **Variables de entorno**: Configurar `GEMINI_API_KEY` en Vercel Dashboard
 - **Función serverless**: `/api/gemini` maneja las llamadas a Gemini de forma segura
 
+## 🔧 Solución de problemas
+
+### Error de modelo Gemini
+Si encuentras el error `models/gemini-pro is not found`, la aplicación ahora incluye:
+- **Fallback automático**: Intenta diferentes modelos de Gemini automáticamente
+- **Logging mejorado**: Muestra qué modelo se está usando y cualquier error
+- **Sugerencias por defecto**: Si falla la IA, usa sugerencias predefinidas
+
+### Probar la API de Gemini
+Para verificar que tu API key funciona:
+```bash
+node test-gemini.js
+```
+Este script probará diferentes modelos de Gemini y te dirá cuál funciona.
+
 ## 💡 Créditos y agradecimientos
 - Inspirado en las mejores prácticas de UX/UI y diseño premium.
 - Animaciones por [GSAP](https://gsap.com/).

@@ -40,9 +40,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     console.log('Prompt recibido:', prompt.substring(0, 200) + '...');
+    console.log('API Key configurada:', API_KEY ? 'Sí' : 'No');
 
     const genAI = new GoogleGenerativeAI(API_KEY);
+    
+    // Usar gemini-1.5-flash como modelo principal (mejor para cuotas gratuitas)
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    console.log('Modelo configurado: gemini-1.5-flash');
 
     // Configuración mejorada para obtener JSON válido
     const result = await model.generateContent({
