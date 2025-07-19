@@ -1,124 +1,148 @@
-# ¿Qué le regalo? 🎁
+Aquí tienes el **README completo en Markdown** con todas las mejoras, badges, secciones optimizadas y lugar para imágenes/diagramas.
 
-**¿Qué le regalo?** es una aplicación web que utiliza IA para ayudarte a encontrar el regalo perfecto para cualquier ocasión. A través de una serie de preguntas interactivas, filtra opciones y te sugiere ideas personalizadas según el perfil y los intereses del destinatario.
-
-## ✨ Características principales
-- Asistente de regalos con IA (Google Gemini)
-- Interfaz moderna, responsiva y premium
-- Efectos visuales avanzados (Glassmorphism, gradientes, animaciones GSAP)
-- Preguntas dinámicas y personalizables
-- Sugerencias de regalos creativas y adaptadas al usuario
-- Experiencia fluida tanto en móvil como en escritorio
-- **Backend seguro** con función serverless en Vercel
-
-## 🚀 Tecnologías utilizadas
-- **Frontend**: React + TypeScript, Vite, Tailwind CSS, GSAP
-- **Backend**: Vercel Functions (serverless)
-- **IA**: Google Gemini 1.5 Flash
-- **Desarrollo**: Proxy local para testing
-
-## 📦 Instalación y ejecución
-
-1. **Clona el repositorio:**
-   ```bash
-   git clone <URL-del-repo>
-   cd ¿qué-le-regalo_
-   ```
-
-2. **Instala las dependencias:**
-   ```bash
-   npm install
-   ```
-
-3. **Configuración para desarrollo local:**
-   
-   **Opción A: Desarrollo completo (recomendado)**
-   ```bash
-   npm run dev:full
-   ```
-   Este comando ejecuta tanto el servidor de desarrollo (puerto 3001) como el frontend (puerto 5173) simultáneamente.
-
-   **Opción B: Solo frontend**
-   ```bash
-   npm run dev
-   ```
-   Solo ejecuta el frontend (para cuando tengas el backend desplegado en Vercel).
-
-   **Opción C: Solo servidor de desarrollo**
-   ```bash
-   npm run dev:server
-   ```
-   Solo ejecuta el servidor mock para testing.
-
-4. **Configuración para producción:**
-   
-   **Variables de entorno en Vercel:**
-   - Ve a tu dashboard de Vercel
-   - Settings → Environment Variables
-   - Agrega: `GEMINI_API_KEY` = tu_clave_de_api
-   - Obtén tu clave en [Google AI Studio](https://aistudio.google.com/app/apikey)
-
-5. **Compila para producción:**
-   ```bash
-   npm run build
-   npm run preview
-   ```
-
-## 🔧 ¿Por qué el proxy de desarrollo?
-
-La aplicación utiliza un **backend seguro** con función serverless en Vercel para proteger la API key de Gemini. Para desarrollo local, implementamos:
-
-- **Servidor mock** (`dev-server.js`): Simula la API de Gemini con sugerencias de ejemplo
-- **Proxy de Vite**: Redirige llamadas `/api/gemini` a `localhost:3001` en desarrollo
-- **Configuración automática**: El frontend detecta el entorno y usa la URL correcta
-
-**Ventajas:**
-- ✅ API key protegida en producción
-- ✅ Desarrollo local sin configurar API keys
-- ✅ Testing rápido con datos de ejemplo
-- ✅ Transición transparente entre desarrollo y producción
-
-## 🛠️ Personalización
-- Puedes editar las preguntas y opciones en `constants.ts`.
-- Los estilos y colores se pueden ajustar en los componentes y en las clases Tailwind.
-- Las animaciones GSAP se encuentran en los componentes principales (Header, WelcomeScreen, GiftSuggestionCard).
-- El servidor mock (`dev-server.js`) se puede personalizar para diferentes escenarios de testing.
-
-## 📄 Estructura del proyecto
-- `components/` — Componentes de UI (cards, header, loading, etc.)
-- `services/` — Lógica de conexión con la IA (Gemini)
-- `api/` — Funciones serverless para Vercel
-- `constants.ts` — Preguntas y opciones del cuestionario
-- `dev-server.js` — Servidor de desarrollo local
-- `App.tsx` — Lógica principal de la app
-- `index.html`, `index.tsx` — Entrada de la app
-
-## 🌐 Despliegue
-- **Vercel**: Despliegue automático con `git push`
-- **Variables de entorno**: Configurar `GEMINI_API_KEY` en Vercel Dashboard
-- **Función serverless**: `/api/gemini` maneja las llamadas a Gemini de forma segura
-
-## 🔧 Solución de problemas
-
-### Error de modelo Gemini
-Si encuentras el error `models/gemini-pro is not found`, la aplicación ahora incluye:
-- **Fallback automático**: Intenta diferentes modelos de Gemini automáticamente
-- **Logging mejorado**: Muestra qué modelo se está usando y cualquier error
-- **Sugerencias por defecto**: Si falla la IA, usa sugerencias predefinidas
-
-### Probar la API de Gemini
-Para verificar que tu API key funciona:
-```bash
-node test-gemini.js
-```
-Este script probará diferentes modelos de Gemini y te dirá cuál funciona.
-
-## 💡 Créditos y agradecimientos
-- Inspirado en las mejores prácticas de UX/UI y diseño premium.
-- Animaciones por [GSAP](https://gsap.com/).
-- IA por [Google Gemini](https://aistudio.google.com/).
-- Despliegue seguro con [Vercel](https://vercel.com/).
+Incluye **estructura lista para copiar-pegar en tu repo**:
 
 ---
 
-¡Esperamos que disfrutes usando **¿Qué le regalo?** y encuentres el regalo perfecto para cada ocasión!
+````markdown
+# 🎁 ¿Qué le regalo?
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-4285F4?logo=google&logoColor=white)
+
+👉 **Live Demo**: [https://que-le-regalo.vercel.app](#)
+
+---
+
+## ✨ ¿Qué es?
+**¿Qué le regalo?** es una aplicación web con **IA** que te ayuda a encontrar el regalo perfecto para cualquier ocasión.  
+Solo responde unas preguntas y deja que **Google Gemini** haga la magia.  
+
+✔ **Interfaz moderna** (Glassmorphism + GSAP)  
+✔ **Sugerencias adaptadas al perfil**  
+✔ **Seguro y escalable** (serverless en Vercel)  
+
+---
+
+## 🚀 Stack Tecnológico
+- **Frontend:** React + TypeScript + Tailwind + GSAP
+- **Backend:** Vercel Functions (Serverless)
+- **IA:** Google Gemini 1.5 Flash
+- **Dev Tools:** Vite + Proxy local
+
+---
+
+## 🖼 Vista previa
+
+![App Preview](./assets/preview.png)
+
+---
+
+## ⚡ Instalación rápida
+
+```bash
+# 1. Clonar repositorio
+git clone <URL-del-repo>
+cd que-le-regalo
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Ejecutar en modo completo (frontend + mock server)
+npm run dev:full
+````
+
+✅ **Frontend:** [http://localhost:5173](http://localhost:5173)
+✅ **Servidor mock:** [http://localhost:3001](http://localhost:3001)
+
+---
+
+### 🔑 Variables de Entorno
+
+Para producción, configura en **Vercel**:
+
+```
+GEMINI_API_KEY=tu_clave_de_api
+```
+
+Obtén tu API key en [Google AI Studio](https://aistudio.google.com/app/apikey).
+
+---
+
+## 🌐 Despliegue en Vercel
+
+1. Conecta el repositorio en [Vercel](https://vercel.com/).
+2. Añade la variable **GEMINI\_API\_KEY** en **Environment Variables**.
+3. Haz deploy (`git push`) y ¡listo!
+
+---
+
+## 🔍 Arquitectura
+
+### **Arquitectura Inicial (Problema)**
+
+* React → Gemini API (API Key expuesta ❌)
+
+### **Arquitectura Final (Solución)**
+
+* React → **Serverless Function (Vercel)** → Gemini API (API Key protegida ✅)
+
+---
+
+## 🛠 Características principales
+
+* ✅ **Asistente IA** (Google Gemini)
+* ✅ **Diseño premium**: Glassmorphism, gradientes, animaciones GSAP
+* ✅ **Preguntas dinámicas y personalizables**
+* ✅ **Experiencia responsive**
+* ✅ **Backend seguro con Serverless Functions**
+
+---
+
+## 💡 ¿Por qué esta arquitectura?
+
+* **Seguridad:** API Key oculta en backend.
+* **Escalabilidad:** Funciones serverless en Vercel.
+* **Desarrollo rápido:** Proxy local + mock data para testing.
+
+---
+
+## 📄 Estructura del proyecto
+
+```
+📂 src
+ ┣ 📂 components    # Componentes UI
+ ┣ 📂 services      # Conexión con IA (Gemini)
+ ┣ 📂 api           # Funciones serverless (Vercel)
+ ┣ 📜 constants.ts  # Preguntas y opciones
+ ┣ 📜 App.tsx       # Lógica principal
+ ┗ 📜 dev-server.js # Servidor mock para desarrollo
+```
+
+---
+
+## 🔧 Solución de problemas
+
+### Error `models/gemini-pro is not found`
+
+* ✅ **Fallback automático**: Cambia a modelos disponibles.
+* ✅ **Sugerencias por defecto**: Si falla la IA, usa opciones predefinidas.
+* ✅ **Test rápido**:
+
+```bash
+node test-gemini.js
+```
+
+---
+
+## 🙌 Créditos
+
+* IA: [Google Gemini](https://aistudio.google.com/)
+* Hosting: [Vercel](https://vercel.com/)
+* Animaciones: [GSAP](https://gsap.com/)
+
+---
+
+⭐ **¿Te gustó el proyecto?** Dale una estrella en GitHub ⭐
+
