@@ -17,7 +17,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const API_KEY = process.env.GEMINI_API_KEY;
+    const API_KEY = process.env.gemini_api_key;
 
     if (!API_KEY) {
       console.error('GEMINI_API_KEY no está configurada');
