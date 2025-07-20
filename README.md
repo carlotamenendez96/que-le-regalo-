@@ -4,7 +4,7 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-4285F4?logo=google&logoColor=white)
 
-👉 **Live Demo**: [https://que-le-regalo.vercel.app](#)
+👉 **Live Demo**: [https://queleregalo.es/](#)
 
 ---
 
@@ -28,7 +28,7 @@ Solo responde unas preguntas y deja que **Google Gemini** haga la magia.
 
 ## 🖼 Vista previa
 
-![App Preview](./assets/preview.png)
+![App Preview](./og-image.png)
 
 ---
 

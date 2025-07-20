@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://queleregalo.es/sitemap.xml 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { GiftSuggestion } from '../types';
 import GiftSuggestionCard from './GiftSuggestionCard';
 
@@ -8,6 +8,17 @@ interface ResultsScreenProps {
 }
 
 const ResultsScreen: React.FC<ResultsScreenProps> = ({ suggestions, onReset }) => {
+  useEffect(() => {
+    document.title = "Resultados de regalos | ¿Qué le regalo?";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute(
+        "content",
+        "Tus sugerencias de regalos personalizadas con IA."
+      );
+    }
+  }, []);
+
   return (
     <div className="w-full animate-fade-in">
       <div className="text-center mb-10">
