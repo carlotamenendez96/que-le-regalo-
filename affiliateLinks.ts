@@ -31,34 +31,47 @@ export const affiliateCategoryUrls: {
     'Regalo para él': 'https://www.amazon.es/regalo-el/s?k=regalo+para+el&tag='+amazonAffiliateId,
     'Regalo para ella': 'https://www.amazon.es/regalo-ella/s?k=regalo+para+ella&tag='+amazonAffiliateId,
     'Regalo para él y ella': 'https://www.amazon.es/regalo-el-y-ella/s?k=regalo+para+el+y+ella&tag='+amazonAffiliateId,
+    
     // ...añade más si lo deseas
   }
 };
 
-export function openAffiliateLink(category: string, store: string) {
+export function openAffiliateLink(
+  giftName: string,
+  giftCategory: string,
+  store: string
+) {
   const urls = affiliateCategoryUrls[store];
   if (!urls) return;
 
-  // Intentar match exacto
-  let url = urls[category];
+  // 1. Buscar por nombre de regalo (siempre)
+  let url = null;
+  if (giftName) {
+    url = `https://www.amazon.es/s?k=${encodeURIComponent(giftName)}&tag=${amazonAffiliateId}`;
+  }
 
-  // Si no hay match exacto, buscar por inclusión de palabra clave
+  // 2. Si no hay nombre, buscar por categoría predefinida
+  if (!url && urls[giftCategory]) {
+    url = urls[giftCategory];
+  }
+
+  // 3. Si no hay match exacto, buscar por inclusión de palabra clave en la categoría
   if (!url) {
     const foundKey = Object.keys(urls).find(key =>
-      category.toLowerCase().includes(key.toLowerCase()) ||
-      key.toLowerCase().includes(category.toLowerCase())
+      giftCategory.toLowerCase().includes(key.toLowerCase()) ||
+      key.toLowerCase().includes(giftCategory.toLowerCase())
     );
     if (foundKey) url = urls[foundKey];
   }
 
-  // Fallback: búsqueda genérica en Amazon
-  if (!url) {
-    url = `https://www.amazon.es/s?k=${encodeURIComponent(category)}&tag=${amazonAffiliateId}`;
+  // 4. Fallback final: búsqueda genérica por categoría
+  if (!url && giftCategory) {
+    url = `https://www.amazon.es/s?k=${encodeURIComponent(giftCategory)}&tag=${amazonAffiliateId}`;
   }
 
   if (url) {
     window.open(url, '_blank');
   } else {
-    alert(`No hay enlace de afiliado para la categoría "${category}" en la tienda "${store}"`);
+    alert(`No hay enlace de afiliado para la categoría "${giftCategory}" en la tienda "${store}"`);
   }
 } 

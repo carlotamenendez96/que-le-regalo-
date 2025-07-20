@@ -20,12 +20,12 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ suggestions, onReset }) =
   }, []);
 
   return (
-    <div className="w-full animate-fade-in">
+    <div className="w-full animate-fade-in flex flex-col min-h-screen">
       <div className="text-center mb-10">
         <h2 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#a259ff] to-[#ff7eb9] mb-2">
           ¡Aquí tienes algunas ideas!
         </h2>
-        <p className="text-slate-600 dark:text-slate-300 text-lg">
+        <p className="text-[#b8c1ec] text-lg mb-10">
           Hemos seleccionado estos regalos especialmente para ti.
         </p>
       </div>
@@ -50,6 +50,10 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ suggestions, onReset }) =
           Buscar de Nuevo
         </button>
       </div>
+      {/* Footer legal Amazon Afiliados */}
+      <footer className="mt-8 mb-2 text-xs text-center text-slate-400 opacity-70">
+        queregalo.es es participante del Programa de Asociados de Amazon Services LLC, un programa de publicidad de afiliados diseñado para proporcionar un medio para que los sitios ganen tarifas de publicidad mediante la publicidad y los enlaces a Amazon.es.
+      </footer>
     </div>
   );
 };

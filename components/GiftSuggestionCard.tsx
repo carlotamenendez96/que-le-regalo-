@@ -40,7 +40,7 @@ const GiftSuggestionCard: React.FC<GiftSuggestionCardProps> = ({ suggestion }) =
     const icon = getIconForCategory(suggestion.categoria);
     const hasAmazonLink = !!(affiliateCategoryUrls.amazon as any)[suggestion.categoria];
     return (
-        <div className="h-full w-full max-w-2xl mx-auto bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 shadow-2xl shadow-violet-500/10 rounded-3xl p-6 sm:p-8 flex flex-col items-center transition-transform transition-shadow duration-300 ease-in-out lg:hover:scale-105 lg:hover:shadow-3xl lg:hover:shadow-[#a259ff]/40" style={{ minHeight: '420px' }}>
+        <div className="flex flex-col justify-between h-full w-full max-w-2xl mx-auto bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 shadow-2xl shadow-violet-500/10 rounded-3xl p-6 sm:p-8 items-center transition-transform transition-shadow duration-300 ease-in-out lg:hover:scale-105 lg:hover:shadow-3xl lg:hover:shadow-[#a259ff]/40">
             <div className="flex items-center mb-4">
                 <div className="p-3 rounded-full bg-gradient-to-br from-[#ff7eb9] to-[#8aaaff] text-white transition-colors duration-300">
                     {icon}
@@ -49,17 +49,12 @@ const GiftSuggestionCard: React.FC<GiftSuggestionCardProps> = ({ suggestion }) =
             </div>
             <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#ff7eb9] to-[#8aaaff] mb-2 text-center">{suggestion.nombre}</h3>
             <p className="text-[#E0E0E0] text-base text-center font-normal leading-relaxed">{suggestion.descripcion}</p>
-            <div className="flex-1 w-full" />
             {hasAmazonLink && (
                 <button
-                  className="mt-auto w-full flex items-center justify-center gap-2 py-2 border border-[#FF9900] text-[#FF9900] rounded-lg bg-transparent font-medium text-sm hover:bg-[#FFF7ED] transition-colors"
-                  style={{ minHeight: '40px' }}
-                  onClick={() => openAffiliateLink(suggestion.categoria, 'amazon')}
+                  className="mt-4 w-full py-1.5 px-3 rounded border border-[#e6c200] font-medium text-sm text-[#232f3e] bg-gradient-to-b from-[#fffbe6] to-[#ffe066] shadow-sm hover:from-[#fffde4] hover:to-[#ffe599] transition-colors whitespace-nowrap overflow-hidden text-ellipsis"
+                  style={{ minHeight: '36px' }}
+                  onClick={() => openAffiliateLink(suggestion.nombre, suggestion.categoria, 'amazon')}
                 >
-                  <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" className="inline-block">
-                    <path d="M16 0C7.163 0 0 7.163 0 16c0 8.837 7.163 16 16 16s16-7.163 16-16C32 7.163 24.837 0 16 0zm0 29.333C8.636 29.333 2.667 23.364 2.667 16S8.636 2.667 16 2.667 29.333 8.636 29.333 16 23.364 29.333 16 29.333z"/>
-                    <path d="M22.667 12.667c0-2.206-1.794-4-4-4s-4 1.794-4 4c0 1.657 1.343 3 3 3 .552 0 1 .448 1 1s-.448 1-1 1c-2.206 0-4-1.794-4-4h-2c0 3.313 2.687 6 6 6s6-2.687 6-6z"/>
-                  </svg>
                   Ver en Amazon
                 </button>
             )}
