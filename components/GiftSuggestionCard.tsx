@@ -38,7 +38,7 @@ const getIconForCategory = (category: string) => {
 
 const GiftSuggestionCard: React.FC<GiftSuggestionCardProps> = ({ suggestion }) => {
     const icon = getIconForCategory(suggestion.categoria);
-    const hasAmazonLink = !!(affiliateCategoryUrls.amazon as any)[suggestion.categoria];
+    // Eliminar hasAmazonLink, mostrar siempre el botón
     return (
         <div className="flex flex-col justify-between h-full w-full max-w-2xl mx-auto bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 shadow-2xl shadow-violet-500/10 rounded-3xl p-6 sm:p-8 items-center transition-transform transition-shadow duration-300 ease-in-out lg:hover:scale-105 lg:hover:shadow-3xl lg:hover:shadow-[#a259ff]/40">
             <div className="flex items-center mb-4">
@@ -49,15 +49,13 @@ const GiftSuggestionCard: React.FC<GiftSuggestionCardProps> = ({ suggestion }) =
             </div>
             <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#ff7eb9] to-[#8aaaff] mb-2 text-center">{suggestion.nombre}</h3>
             <p className="text-[#E0E0E0] text-base text-center font-normal leading-relaxed">{suggestion.descripcion}</p>
-            {hasAmazonLink && (
-                <button
-                  className="mt-4 w-full py-1.5 px-3 rounded border border-[#e6c200] font-medium text-sm text-[#232f3e] bg-gradient-to-b from-[#fffbe6] to-[#ffe066] shadow-sm hover:from-[#fffde4] hover:to-[#ffe599] transition-colors whitespace-nowrap overflow-hidden text-ellipsis"
-                  style={{ minHeight: '36px' }}
-                  onClick={() => openAffiliateLink(suggestion.nombre, suggestion.categoria, 'amazon')}
-                >
-                  Ver en Amazon
-                </button>
-            )}
+            <button
+              className="mt-4 w-full py-1.5 px-3 rounded border border-[#e6c200] font-medium text-sm text-[#232f3e] bg-gradient-to-b from-[#fffbe6] to-[#ffe066] shadow-sm hover:from-[#fffde4] hover:to-[#ffe599] transition-colors whitespace-nowrap overflow-hidden text-ellipsis"
+              style={{ minHeight: '36px' }}
+              onClick={() => openAffiliateLink(suggestion.nombre, suggestion.categoria, 'amazon')}
+            >
+              Ver en Amazon
+            </button>
         </div>
     );
 };
