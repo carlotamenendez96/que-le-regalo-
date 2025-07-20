@@ -4,7 +4,7 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-4285F4?logo=google&logoColor=white)
 
-👉 **Live Demo**: [https://queleregalo.es/](#)
+👉 **Live Demo**: [https://queleregalo.es](#)
 
 ---
 

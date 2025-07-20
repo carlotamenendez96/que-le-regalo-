@@ -3,7 +3,7 @@ import type { UserAnswers, GiftSuggestion } from '../types';
 export async function getGiftSuggestions(answers: UserAnswers): Promise<GiftSuggestion[]> {
   try {
     // Determinar la URL base según el entorno
-    const baseUrl = import.meta.env.DEV ? '' : 'https://https://queleregalo.es';
+    const baseUrl = import.meta.env.DEV ? '' : 'https://queleregalo.es';
     const apiUrl = `${baseUrl}/api/gemini`;
     
     const prompt = buildPrompt(answers);
